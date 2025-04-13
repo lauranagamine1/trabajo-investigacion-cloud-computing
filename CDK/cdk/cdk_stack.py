@@ -34,7 +34,7 @@ class CdkStack(Stack):
             vpc=vpc,
             security_group=sg,
             key_name="vockey",
-            role=iam.Role.from_role_arn(self, "LabRole",
+            role=iam.Role.from_role_arn(self, "ExistingRole",
             "arn:aws:iam::619874379465:role/LabRole",
             mutable=False
             ),
