@@ -1,21 +1,28 @@
 from aws_cdk import App, Environment, DefaultStackSynthesizer
-from cdk_python.cdk_python_stack import PilaEc2
+from cdk_stack import CdkStack
 import boto3
 
+# Obtener cuenta y región actuales
 session = boto3.session.Session()
 account_id = boto3.client('sts').get_caller_identity()['Account']
 region = session.region_name
 
+# Parámetros de despliegue
 qualifier = "ec2-dep"
-app = App()
-
 env = Environment(account=account_id, region=region)
 
-sintetizador = DefaultStackSynthesizer(
-qualifier=qualifier,
-cloud_formation_execution_role=f"arn:aws:iam::{account_id}:role/LabRole",
-file_assets_bucket_name=f"cdk-{qualifier}-assets-{account_id}-{region}"
+# Crear app CDK
+app = App()
+
+# Configurar el sintetizador (para roles y assets)
+synthesizer = DefaultStackSynthesizer(
+    qualifier=qualifier,
+    cloud_formation_execution_role=f"arn:aws:iam::{account_id}:role/LabRole",
+    file_assets_bucket_name=f"cdk-{qualifier}-assets-{account_id}-{region}"
 )
 
-PilaEc2(app, "PilaEc2", env=env, synthesizer=sintetizador)
+# Instanciar el stack
+CdkStack(app, "PilaEc2", env=env, synthesizer=synthesizer)
+
+# Sintetizar
 app.synth()

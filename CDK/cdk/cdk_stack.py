@@ -10,10 +10,10 @@ class CdkStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Crear VPC por defecto
+        # Usar la VPC por defecto
         vpc = ec2.Vpc.from_lookup(self, "DefaultVPC", is_default=True)
 
-        # Crear grupo de seguridad
+        # Grupo de seguridad
         sg = ec2.SecurityGroup(self, "SGCloud9Ubuntu",
             vpc=vpc,
             description="Permitir SSH y HTTP",
@@ -22,24 +22,24 @@ class CdkStack(Stack):
         sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22), "SSH")
         sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(80), "HTTP")
 
-        # AMI Ubuntu 22 (Cloud9)
-        ami_id = "ami-043cbf1cf918dd74f"  
+        # AMI Ubuntu 22.04 en us-east-1
+        ami_id = "ami-043cbf1cf918dd74f"
 
         # Instancia EC2
-        instance = ec2.Instance(self, "EC2Cloud9Ubuntu",
+        ec2.Instance(self, "EC2Cloud9Ubuntu",
             instance_type=ec2.InstanceType("t2.micro"),
             machine_image=ec2.MachineImage.generic_linux({
-                "us-east-1": ami_id  # Usa la región correspondiente
+                "us-east-1": ami_id
             }),
             vpc=vpc,
             security_group=sg,
-            key_name="vockey",
+            key_name="vockey",  # Asegúrate de tener este par de claves en tu cuenta
             role=iam.Role.from_role_arn(self, "ExistingRole",
-            "arn:aws:iam::619874379465:role/LabRole",
-            mutable=False
+                "arn:aws:iam::619874379465:role/LabRole",  # Cambia el account ID si es necesario
+                mutable=False
             ),
             block_devices=[ec2.BlockDevice(
                 device_name="/dev/xvda",
-                volume=ec2.BlockDeviceVolume.ebs(20)  # 20 GB de disco
+                volume=ec2.BlockDeviceVolume.ebs(20)
             )]
         )
