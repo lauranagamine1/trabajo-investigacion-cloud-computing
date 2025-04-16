@@ -1,5 +1,5 @@
 from aws_cdk import App, Environment, DefaultStackSynthesizer
-from cdk_stack import CdkStack
+from cdk_stack.py import CdkStack
 import boto3
 
 # Obtener cuenta y región actuales
