@@ -2,9 +2,9 @@ from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
     aws_iam as iam,
-    CfnParameter,
 )
 from constructs import Construct
+from datetime import datetime
 
 class CdkStack(Stack):
 
@@ -13,19 +13,19 @@ class CdkStack(Stack):
 
         vpc = ec2.Vpc.from_lookup(self, "DefaultVPC", is_default=True)
 
-        # Grupo de seguridad
+        # Crear grupo de seguridad
         sg = ec2.SecurityGroup(self, "SGCloud9Ubuntu",
             vpc=vpc,
             description="Permitir SSH y HTTP",
             allow_all_outbound=True
         )
-        sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22), "SSH")
-        sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(80), "HTTP")
+        sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22), "Permitir SSH")
+        sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(80), "Permitir HTTP")
 
         # AMI Ubuntu 22.04 en us-east-1
         ami_id = "ami-043cbf1cf918dd74f"
 
-        # Instancia EC2
+        # Crear instancia EC2
         ec2.Instance(self, "EC2Cloud9Ubuntu",
             instance_type=ec2.InstanceType("t2.micro"),
             machine_image=ec2.MachineImage.generic_linux({
