@@ -2,6 +2,7 @@ from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
     aws_iam as iam,
+    CfnParameter,
 )
 from constructs import Construct
 
@@ -10,7 +11,6 @@ class CdkStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Usar la VPC por defecto
         vpc = ec2.Vpc.from_lookup(self, "DefaultVPC", is_default=True)
 
         # Grupo de seguridad
@@ -33,9 +33,9 @@ class CdkStack(Stack):
             }),
             vpc=vpc,
             security_group=sg,
-            key_name="vockey",  # Asegúrate de tener este par de claves en tu cuenta
+            key_name="vockey",  
             role=iam.Role.from_role_arn(self, "ExistingRole",
-                "arn:aws:iam::619874379465:role/LabRole",  # Cambia el account ID si es necesario
+                "arn:aws:iam::619874379465:role/LabRole",  
                 mutable=False
             ),
             block_devices=[ec2.BlockDevice(

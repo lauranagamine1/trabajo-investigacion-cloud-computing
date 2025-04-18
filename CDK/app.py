@@ -22,7 +22,7 @@ synthesizer = DefaultStackSynthesizer(
 )
 
 # Instanciar el stack
-CdkStack(app, "PilaEc2", env=env, synthesizer=synthesizer)
+CdkStack(app, "CDKStack", env=env, synthesizer=synthesizer)
 
 # Sintetizar
 app.synth()
