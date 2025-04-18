@@ -17,7 +17,7 @@ app = App()
 # Configurar el sintetizador (para roles y assets)
 synthesizer = DefaultStackSynthesizer(
     cloud_formation_execution_role=f"arn:aws:iam::{account_id}:role/LabRole",
-    file_assets_bucket_name=f"cdk-{qualifier}-assets-{account_id}-{region}"
+    file_assets_bucket_name=f"cdk-hnb659fds-assets-{account_id}-{region}"
 )
 
 # Instanciar el stack
