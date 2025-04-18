@@ -8,7 +8,6 @@ account_id = boto3.client('sts').get_caller_identity()['Account']
 region = session.region_name
 
 # Parámetros de despliegue
-qualifier = "CDKToolkit"
 env = Environment(account=account_id, region=region)
 
 # Crear app CDK
