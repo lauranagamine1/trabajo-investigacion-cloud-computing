@@ -24,5 +24,5 @@ synthesizer = DefaultStackSynthesizer(
 # Instanciar el stack
 CdkStack(app, "CDKStack", env=env, synthesizer=synthesizer)
 
-# Sintetizar
+# Sintetizar 
 app.synth()
