@@ -8,7 +8,7 @@ account_id = boto3.client('sts').get_caller_identity()['Account']
 region = session.region_name
 
 # Parámetros de despliegue
-qualifier = "CDKToolKit"
+qualifier = "CDKToolkit"
 env = Environment(account=account_id, region=region)
 
 # Crear app CDK
@@ -16,7 +16,6 @@ app = App()
 
 # Configurar el sintetizador (para roles y assets)
 synthesizer = DefaultStackSynthesizer(
-    qualifier=qualifier,
     cloud_formation_execution_role=f"arn:aws:iam::{account_id}:role/LabRole",
     file_assets_bucket_name=f"cdk-{qualifier}-assets-{account_id}-{region}"
 )
